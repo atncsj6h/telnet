@@ -1,0 +1,50 @@
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+#ifndef platform_h_included
+#define platform_h_included
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+#if !defined( __has_attribute )
+  #define __has_attribute(_ATTR)  0
+#endif
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#include <errno.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#include <sys/select.h>
+#include <sys/socket.h>
+
+typedef unsigned char BYTE;
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+#if !defined( ATTR_PRINTF )
+  #if __has_attribute( format )
+    #define ATTR_PRINTF(_F,_V)  __attribute__ ((format( printf,_F, _V)))
+  #else
+    #define ATTR_PRINTF(_F,_V)
+  #endif
+#endif
+
+#if !defined( va_copy )
+  #if defined( __va_copy )
+    #define  va_copy            __va_copy
+  #elif defined( _MSVC_ )
+    #define  va_copy(to,from)   (to) = (from)
+  #else
+    #define  va_copy(to,from)   memcpy((to),(from),sizeof(va_list))
+  #endif
+#endif
+
+#endif  //  platform_h_included
